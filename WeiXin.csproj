@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>WeiXin</AssemblyName>
     <RootNamespace>WeiXin</RootNamespace>
+    <Authors>yashrio</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>微信授权、支付等</Description>
+    <PackageId>Yashrio.WeiXin</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
