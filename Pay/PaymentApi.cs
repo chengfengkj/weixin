@@ -14,13 +14,32 @@ namespace WeiXin.Pay
     /// </summary>
     public class PaymentApi
     {
-        static string USER_AGENT = string.Format("WXPaySDK/1.0.0.1 ({0}) .net/{1}", Environment.OSVersion, Environment.Version);
         /**
          * 调用统一下单接口请求订单
          *  接收支付通知
          *  查询支付结果
          *  订单退款-部分退款
          * */
+
+        static string USER_AGENT = string.Format("WXPaySDK/1.0.0.1 ({0}) .net/{1}", Environment.OSVersion, Environment.Version);
+
+        /// <summary>
+        /// 企业支付，付款给用户
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static ResponseEnterprize Enterprize(RequestEnterprize request)
+        {
+            var urlFormat = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+            var body = WebUtils.PayPost(request.PackageRequestHandler.ParseXML(), urlFormat, true, Config.WeixinSetting.CertPwd
+                , Config.WeixinSetting.CertPath ,  out string msg);
+            if (!string.IsNullOrEmpty(msg))
+            {
+                logger.LogError($"调用微信Unifiedorder 失败，url:{urlFormat},msg:{msg}");
+                return null;
+            }
+            return new ResponseEnterprize(body);
+        }
 
         /// <summary>
         /// 统一支付接口，可接受JSAPI/NATIVE/APP 下预支付订单，返回预支付订单号。NATIVE 支付返回二维码code_url。
@@ -30,16 +49,7 @@ namespace WeiXin.Pay
         public static ResponseUnifiedOrder Unifiedorder(RequestUnifiedOrder dataInfo)
         {
             var urlFormat = ReurnPayApiUrl("https://api.mch.weixin.qq.com/{0}pay/unifiedorder");
-            var hi = new HttpItem
-            {
-                URL = urlFormat,
-                Method = "POST",
-                PostEncoding = Encoding.UTF8,
-                ContentType = "text/xml",
-                UserAgent= USER_AGENT,
-                Postdata = dataInfo.PackageRequestHandler.ParseXML(),       //获取XML
-            };
-            var body = WebUtils.PayPost(dataInfo.PackageRequestHandler.ParseXML(), urlFormat, false, null, null,out string msg);
+            var body = WebUtils.PayPost(dataInfo.PackageRequestHandler.ParseXML(), urlFormat, false, null, null, out string msg);
             if (!string.IsNullOrEmpty(msg))
             {
                 logger.LogError($"调用微信Unifiedorder 失败，url:{urlFormat},msg:{msg}");
@@ -102,6 +112,7 @@ namespace WeiXin.Pay
         static ILogger logger;
         static PaymentApi()
         {
+            if(Config.ApplicationServices!=null)
             logger = Config.ApplicationServices.GetService<ILogger<PaymentApi>>();
         }
 

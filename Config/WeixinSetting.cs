@@ -29,6 +29,14 @@
         /// </summary>
         public string PayMchID { get; set; }
 
+        /// <summary>
+        /// 证书路径，，win下需要先双击安装证书
+        /// </summary>
+        public string CertPath { get; set; }
 
+        /// <summary>
+        /// 证书密码
+        /// </summary>
+        public string CertPwd { get; set; }
     }
 }
