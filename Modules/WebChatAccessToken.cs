@@ -4,12 +4,8 @@ using System.Text;
 
 namespace WeiXin.Modules
 {
-    public class OAuthAccessTokenResult
+    public class OAuthAccessTokenResult: AccessToken
     {
-        public string access_token { get; set; }
-
-        public string expires_in { get; set; }
-
         public string refresh_token { get; set; }
 
         public string openid { get; set; }

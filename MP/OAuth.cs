@@ -41,6 +41,33 @@ namespace WeiXin.MP
         }
 
         /// <summary>
+        /// 获取client_credential的token
+        /// </summary>
+        /// <returns></returns>
+        public static AccessToken GetAccessToken()
+        {
+            var url = $"{Config.WeixinSetting.ApiDomain}/cgi-bin/token?appid={Config.WeixinSetting.AppId}&secret={Config.WeixinSetting.AppSecret}&grant_type=client_credential";
+
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                var getresult = client.GetAsync(url);
+                var result = getresult.Result.Content.ReadAsStringAsync();
+                var rs = result.Result;
+                if (!string.IsNullOrWhiteSpace(rs) && rs.Contains("errcode"))
+                {
+                    //异常
+                    logger.LogError($"获取AccessToken异常，错误码{rs}");
+                    return null;
+                }
+                else
+                {
+                    var token = JsonConvert.DeserializeObject<AccessToken>(rs);
+                    return token;
+                }
+            }
+        }
+
+        /// <summary>
         /// 获取AccessToken
         /// </summary>
         /// <param name="code"></param>
@@ -108,6 +135,24 @@ namespace WeiXin.MP
                     //_logger.LogInformation("获取用户信息失败:{0}", result.Result);
                     return null;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 获取JSApi用的ticket
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static JSApiTicket GetTicket(string token)
+        {
+            var url = $"{Config.WeixinSetting.ApiDomain}/cgi-bin/ticket/getticket?access_token={token}&type=jsapi";
+
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                var getresult = client.GetAsync(url);
+                var result = getresult.Result.Content.ReadAsStringAsync();
+                var rs = result.Result;
+                return JsonConvert.DeserializeObject<JSApiTicket>(rs);
             }
         }
     }
