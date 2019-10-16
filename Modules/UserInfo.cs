@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WeiXin.Modules
 {
-    public class UserInfo
+    public class UserInfo: BaseResult
     {
         public string openid { get; set; }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WeiXin.Modules
 {
-   public  class AccessToken
+   public  class AccessToken: BaseResult
     {
         public string access_token { get; set; }
 

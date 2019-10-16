@@ -99,13 +99,8 @@ namespace WeiXin.MP
                 {
                     //异常
                     logger.LogError($"获取AccessToken异常，错误码{rs}");
-                    return null;
                 }
-                else
-                {
-                    var token = JsonConvert.DeserializeObject<OAuthAccessTokenResult>(rs);
-                    return token;
-                }
+                return JsonConvert.DeserializeObject<OAuthAccessTokenResult>(rs);
             }
         }
 
