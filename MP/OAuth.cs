@@ -1,12 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WeiXin.Enums;
 using WeiXin.Extensions;
 using WeiXin.Modules;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace WeiXin.MP
 {
@@ -44,9 +41,9 @@ namespace WeiXin.MP
         /// 获取client_credential的token
         /// </summary>
         /// <returns></returns>
-        public static AccessToken GetAccessToken()
+        public static AccessToken GetAccessToken(string appId, string secret)
         {
-            var url = $"{Config.WeixinSetting.ApiDomain}/cgi-bin/token?appid={Config.WeixinSetting.AppId}&secret={Config.WeixinSetting.AppSecret}&grant_type=client_credential";
+            var url = $"{Config.ApiDomain}/cgi-bin/token?appid={appId}&secret={secret}&grant_type=client_credential";
 
             using (var client = new System.Net.Http.HttpClient())
             {
@@ -65,17 +62,6 @@ namespace WeiXin.MP
         /// <summary>
         /// 获取AccessToken
         /// </summary>
-        /// <param name="code"></param>
-        /// <param name="grantType"></param>
-        /// <returns></returns>
-        public static OAuthAccessTokenResult GetAccessToken(string code, string grantType = "authorization_code")
-        {
-            return GetAccessToken(Config.WeixinSetting.AppId, Config.WeixinSetting.AppSecret, code, grantType);
-        }
-
-        /// <summary>
-        /// 获取AccessToken
-        /// </summary>
         /// <param name="appId"></param>
         /// <param name="secret"></param>
         /// <param name="code">code作为换取access_token的票据，每次用户授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。</param>
@@ -83,7 +69,7 @@ namespace WeiXin.MP
         /// <returns></returns>
         public static OAuthAccessTokenResult GetAccessToken(string appId, string secret, string code, string grantType = "authorization_code")
         {
-            var url = $"{Config.WeixinSetting.ApiDomain}/sns/oauth2/access_token?appid={appId}&secret={secret}&code={code}&grant_type={grantType}";
+            var url = $"{Config.ApiDomain}/sns/oauth2/access_token?appid={appId}&secret={secret}&code={code}&grant_type={grantType}";
 
             using (var client = new System.Net.Http.HttpClient())
             {
@@ -135,7 +121,7 @@ namespace WeiXin.MP
         /// <returns></returns>
         public static JSApiTicket GetTicket(string token)
         {
-            var url = $"{Config.WeixinSetting.ApiDomain}/cgi-bin/ticket/getticket?access_token={token}&type=jsapi";
+            var url = $"{Config.ApiDomain}/cgi-bin/ticket/getticket?access_token={token}&type=jsapi";
 
             using (var client = new System.Net.Http.HttpClient())
             {

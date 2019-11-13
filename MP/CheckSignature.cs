@@ -20,9 +20,9 @@ namespace WeiXin.MP
         /// <param name="nonce"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static bool Check(string signature, string timestamp, string nonce)
+        public static bool Check(string token,string signature, string timestamp, string nonce)
         {
-            return signature == GetSignature(timestamp, nonce);
+            return signature == GetSignature(token,timestamp, nonce);
         }
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace WeiXin.MP
         /// <param name="nonce"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static string GetSignature(string timestamp, string nonce)
+        public static string GetSignature(string token,string timestamp, string nonce)
         {
-            var arr = new[] { Config.WeixinSetting.Token, timestamp, nonce }.OrderBy(z => z).ToArray();
+            var arr = new[] { token, timestamp, nonce }.OrderBy(z => z).ToArray();
             var arrString = string.Join("", arr);
             //var enText = FormsAuthentication.HashPasswordForStoringInConfigFile(arrString, "SHA1");//使用System.Web.Security程序集
             var sha1 = SHA1.Create();
@@ -78,10 +78,10 @@ namespace WeiXin.MP
             return enText.ToString();
         }
 
-        public static bool Check(string signature, string timestamp, string nonce, string Token)
+        public static bool Check(string signature, string timestamp, string nonce, string Token,string encodingAESKey)
         {
             var sign = "";
-            WXBizMsgCrypt.GenarateSinature(Token, timestamp, nonce, Config.WeixinSetting.EncodingAESKey, ref sign);
+            WXBizMsgCrypt.GenarateSinature(Token, timestamp, nonce, encodingAESKey, ref sign);
             return sign.Equals(signature);
         }
     }

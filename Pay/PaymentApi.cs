@@ -28,11 +28,10 @@ namespace WeiXin.Pay
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static ResponseEnterprize Enterprize(RequestEnterprize request)
+        public static ResponseEnterprize Enterprize(RequestEnterprize request, string certPath, string certPwd)
         {
             var urlFormat = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
-            var body = WebUtils.PayPost(request.PackageRequestHandler.ParseXML(), urlFormat, true, Config.WeixinSetting.CertPwd
-                , Config.WeixinSetting.CertPath ,  out string msg);
+            var body = WebUtils.PayPost(request.PackageRequestHandler.ParseXML(), urlFormat, true, certPwd, certPath, out string msg);
             if (!string.IsNullOrEmpty(msg))
             {
                 logger.LogError($"调用微信Unifiedorder 失败，url:{urlFormat},msg:{msg}");
@@ -48,7 +47,7 @@ namespace WeiXin.Pay
         /// <returns></returns>
         public static ResponseUnifiedOrder Unifiedorder(RequestUnifiedOrder dataInfo)
         {
-            var urlFormat = ReurnPayApiUrl("https://api.mch.weixin.qq.com/{0}pay/unifiedorder");
+            var urlFormat = "https://api.mch.weixin.qq.com/pay/unifiedorder";
             var body = WebUtils.PayPost(dataInfo.PackageRequestHandler.ParseXML(), urlFormat, false, null, null, out string msg);
             if (!string.IsNullOrEmpty(msg))
             {
@@ -67,7 +66,7 @@ namespace WeiXin.Pay
         /// <param name="package">格式：prepay_id={0}</param>
         /// <param name="signType"></param>
         /// <returns></returns>
-        public static string GetJsPaySign(string appId, string timeStamp, string nonceStr, string package,
+        public static string GetJsPaySign(string appId, string payKey, string timeStamp, string nonceStr, string package,
             string signType = "MD5")
         {
             //设置支付参数
@@ -77,7 +76,7 @@ namespace WeiXin.Pay
             paySignReqHandler.SetParameter("nonceStr", nonceStr);
             paySignReqHandler.SetParameter("package", package);
             paySignReqHandler.SetParameter("signType", signType);
-            var paySign = paySignReqHandler.CreateMd5Sign("key", Config.WeixinSetting.PayKey);
+            var paySign = paySignReqHandler.CreateMd5Sign("key", payKey);
             return paySign;
         }
 
@@ -112,19 +111,8 @@ namespace WeiXin.Pay
         static ILogger logger;
         static PaymentApi()
         {
-            if(Config.ApplicationServices!=null)
-            logger = Config.ApplicationServices.GetService<ILogger<PaymentApi>>();
+            if (Config.ApplicationServices != null)
+                logger = Config.ApplicationServices.GetService<ILogger<PaymentApi>>();
         }
-
-        /// <summary>
-        /// 返回可用的微信支付地址（自动判断是否使用沙箱）
-        /// </summary>
-        /// <param name="urlFormat">如：<code>https://api.mch.weixin.qq.com/{0}pay/unifiedorder</code></param>
-        /// <returns></returns>
-        static string ReurnPayApiUrl(string urlFormat)
-        {
-            return string.Format(urlFormat, Config.WeixinSetting.IsDebug ? "sandboxnew/" : "");
-        }
-
     }
 }

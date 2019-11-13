@@ -11,6 +11,10 @@ namespace WeiXin
         /// ioc 容器
         /// </summary>
         public static IServiceProvider ApplicationServices { get; set; } = null;
-        public static WeixinSetting WeixinSetting { get; set; }
+
+        /// <summary>
+        /// 微信api域名，默认 https://api.weixin.qq.com
+        /// </summary>
+        public static string ApiDomain { get; set; } = "https://api.weixin.qq.com";
     }
 }

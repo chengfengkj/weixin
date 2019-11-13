@@ -2,8 +2,6 @@
 {
     public class WeixinSetting
     {
-        public bool IsDebug { get; set; }
-
         public string Token { get; set; }
 
         public string EncodingAESKey { get; set; }

@@ -29,7 +29,7 @@ namespace WeiXin.Modules.Pay
         /// <param name="remark">转账备注</param>
         /// <param name="ip"></param>
         /// <param name="deviceInfo"></param>
-        public RequestEnterprize(string appId,string mchId,string nonceStr,string outTradeNo,string openId,int amount,string remark,string ip,string deviceInfo=null)
+        public RequestEnterprize(string appId,string mchId,string payKey,string nonceStr,string outTradeNo,string openId,int amount,string remark,string ip,string deviceInfo=null)
         {
             AppId = appId;
             MchId = mchId;
@@ -40,7 +40,7 @@ namespace WeiXin.Modules.Pay
             TotalFee = amount;
             Remark = remark;
             Ip = ip;
-            Key = Config.WeixinSetting.PayKey;
+            Key = payKey;
 
             #region 设置RequestHandler
 

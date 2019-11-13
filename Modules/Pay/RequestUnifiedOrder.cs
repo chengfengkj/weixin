@@ -160,11 +160,11 @@ namespace WeiXin.Modules.Pay
         /// <param name="goodsTag">商品标记，使用代金券或立减优惠功能时需要的参数，说明详见代金券或立减优惠。String(32)，如：WXG</param>
         /// <param name="productId">trade_type=NATIVE时（即扫码支付），此参数必传。此参数为二维码中包含的商品ID，商户自行定义。String(32)，如：12235413214070356458058</param>
         /// <param name="limitPay">是否限制用户不能使用信用卡支付</param>
-        public RequestUnifiedOrder(string body, string outTradeNo, int totalFee, string spbillCreateIp,
+        public RequestUnifiedOrder(string payAppId, string mchId, string payKey, string body, string outTradeNo, int totalFee, string spbillCreateIp,
             string notifyUrl, PayType tradeType, string openid, string nonceStr,
             string deviceInfo = null, DateTimeOffset? timeStart = null, DateTime? timeExpire = null,
             string detail = null, string attach = null, string feeType = "CNY", string goodsTag = null,
-            string productId = null, bool limitPay = false) : this(null, null, body, outTradeNo, totalFee, spbillCreateIp,
+            string productId = null, bool limitPay = false) : this(payAppId, mchId, payKey, null, null, body, outTradeNo, totalFee, spbillCreateIp,
                  notifyUrl, tradeType, openid, null, nonceStr,
                  deviceInfo, timeStart, timeExpire, detail, attach, feeType, goodsTag,
                  productId, limitPay)
@@ -202,15 +202,15 @@ namespace WeiXin.Modules.Pay
         /// <param name="goodsTag">商品标记，使用代金券或立减优惠功能时需要的参数，说明详见代金券或立减优惠。String(32)，如：WXG</param>
         /// <param name="productId">trade_type=NATIVE时（即扫码支付），此参数必传。此参数为二维码中包含的商品ID，商户自行定义。String(32)，如：12235413214070356458058</param>
         /// <param name="limitPay">是否限制用户不能使用信用卡支付</param>
-        public RequestUnifiedOrder(string subappid, string submchid, string body, string outTradeNo, int totalFee, string spbillCreateIp,
+        public RequestUnifiedOrder( string payAppId,string mchId,string payKey,string subappid, string submchid, string body, string outTradeNo, int totalFee, string spbillCreateIp,
             string notifyUrl, PayType tradeType, string openid, string subOpenid, string nonceStr,
             string deviceInfo = null, DateTimeOffset? timeStart = null, DateTime? timeExpire = null,
             string detail = null, string attach = null, string feeType = "CNY", string goodsTag = null,
             string productId = null, bool limitPay = false
              )
         {
-            AppId = Config.WeixinSetting.PayAppID;
-            MchId = Config.WeixinSetting.PayMchID;
+            AppId = payAppId;
+            MchId = mchId;
             DeviceInfo = deviceInfo;
             NonceStr = nonceStr;
             SignType = "MD5";
@@ -229,7 +229,7 @@ namespace WeiXin.Modules.Pay
             ProductId = productId;
             LimitPay = limitPay ? "no_credit" : null;
             OpenId = openid;
-            Key = Config.WeixinSetting.PayKey;
+            Key = payKey;
             SubAppId = subappid;
             SubMchId = submchid;
             SubOpenid = subOpenid;
