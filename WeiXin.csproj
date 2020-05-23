@@ -8,13 +8,14 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>微信授权、支付等</Description>
     <PackageId>Yashrio.WeiXin</PackageId>
-    <Version>1.0.5</Version>
+    <Version>1.0.7</Version>
     <RepositoryUrl>https://github.com/chengfengkj/weixin</RepositoryUrl>
+    <FileVersion>1.0.7.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
