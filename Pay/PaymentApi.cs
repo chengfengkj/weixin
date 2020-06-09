@@ -34,10 +34,27 @@ namespace WeiXin.Pay
             var body = WebUtils.PayPost(request.PackageRequestHandler.ParseXML(), urlFormat, true, certPwd, certPath, out string msg);
             if (!string.IsNullOrEmpty(msg))
             {
-                logger.LogError($"调用微信Unifiedorder 失败，url:{urlFormat},msg:{msg}");
+                logger.LogError($"调用微信Enterprize 失败，url:{urlFormat},msg:{msg}");
                 return null;
             }
             return new ResponseEnterprize(body);
+        }
+
+        /// <summary>
+        /// 用户退款
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static ResponseRefund Refund(RequestRefund request, string certPath, string certPwd)
+        {
+            var urlFormat = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+            var body = WebUtils.PayPost(request.PackageRequestHandler.ParseXML(), urlFormat, true, certPwd, certPath, out string msg);
+            if (!string.IsNullOrEmpty(msg))
+            {
+                logger.LogError($"调用微信Refund 失败，url:{urlFormat},msg:{msg}");
+                return null;
+            }
+            return new ResponseRefund(body);
         }
 
         /// <summary>
