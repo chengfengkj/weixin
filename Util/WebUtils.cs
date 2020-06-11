@@ -69,6 +69,12 @@ namespace WeiXin.Util
                 result = sr.ReadToEnd().Trim();
                 sr.Close();
             }
+            catch (WebException e)
+            {
+                var sr = new StreamReader(e.Response.GetResponseStream(), Encoding.UTF8);
+                var tt = sr.ReadToEnd().Trim();
+                msg = tt;
+            }
             catch (Exception e)
             {
                 msg = e.Message;

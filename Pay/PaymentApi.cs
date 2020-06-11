@@ -34,8 +34,7 @@ namespace WeiXin.Pay
             var body = WebUtils.PayPost(request.PackageRequestHandler.ParseXML(), urlFormat, true, certPwd, certPath, out string msg);
             if (!string.IsNullOrEmpty(msg))
             {
-                logger.LogError($"调用微信Enterprize 失败，url:{urlFormat},msg:{msg}");
-                return null;
+                return new ResponseEnterprize($"<xml><return_code><![CDATA[SUCCESS]]></return_code><err_code_des>{msg}</err_code_des></xml>");
             }
             return new ResponseEnterprize(body);
         }
@@ -51,8 +50,8 @@ namespace WeiXin.Pay
             var body = WebUtils.PayPost(request.PackageRequestHandler.ParseXML(), urlFormat, true, certPwd, certPath, out string msg);
             if (!string.IsNullOrEmpty(msg))
             {
-                logger.LogError($"调用微信Refund 失败，url:{urlFormat},msg:{msg}");
-                return null;
+                //logger.LogError($"调用微信Refund 失败，url:{urlFormat},msg:{msg}");
+                return new ResponseRefund($"<xml><return_code><![CDATA[SUCCESS]]></return_code><err_code_des>{msg}</err_code_des></xml>");
             }
             return new ResponseRefund(body);
         }
@@ -68,8 +67,7 @@ namespace WeiXin.Pay
             var body = WebUtils.PayPost(dataInfo.PackageRequestHandler.ParseXML(), urlFormat, false, null, null, out string msg);
             if (!string.IsNullOrEmpty(msg))
             {
-                logger.LogError($"调用微信Unifiedorder 失败，url:{urlFormat},msg:{msg}");
-                return null;
+                return new ResponseUnifiedOrder($"<xml><return_code><![CDATA[SUCCESS]]></return_code><err_code_des>{msg}</err_code_des></xml>");
             }
             return new ResponseUnifiedOrder(body);
         }

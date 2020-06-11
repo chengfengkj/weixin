@@ -181,7 +181,7 @@ namespace WeiXin.Pay
         /// 输出XML
         /// </summary>
         /// <returns></returns>
-        public string ParseXML()
+        public string ParseXML(bool useCDATA = true)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("<xml>");
@@ -195,7 +195,10 @@ namespace WeiXin.Pay
                 }
                 else
                 {
-                    sb.Append("<" + k + "><![CDATA[" + v + "]]></" + k + ">");
+                    if (useCDATA)
+                        sb.Append("<" + k + "><![CDATA[" + v + "]]></" + k + ">");
+                    else
+                        sb.Append("<" + k + ">" + v + "</" + k + ">");
                 }
 
             }

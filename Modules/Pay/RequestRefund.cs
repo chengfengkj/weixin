@@ -97,7 +97,7 @@ namespace WeiXin.Modules.Pay
             PackageRequestHandler.SetParameter("out_refund_no", this.OutRefundNo);           //商户退款单号
             PackageRequestHandler.SetParameter("total_fee", this.TotalFee.ToString());     //商品金额,以分为单位(money * 100).ToString()
             PackageRequestHandler.SetParameter("refund_fee", this.RefundFee.ToString());     //退款金额,以分为单位(money * 100).ToString()
-            PackageRequestHandler.SetParameter("refund_desc", this.RefundDesc);   //退款原因
+            PackageRequestHandler.SetParameterWhenNotNull("refund_desc", this.RefundDesc);   //退款原因
 
             Sign = PackageRequestHandler.CreateMd5Sign("key", this.Key);
 
